@@ -1,8 +1,16 @@
-import {useState,useEffect} from 'react';
+import {useState,useEffect, useContext} from 'react';
+import { TodoContext } from "../../context/Context";
+import { useNavigate } from 'react-router-dom';
 const MaterialAdd = ()=>{
+	const navigate = useNavigate();
+	const {setLoginUser} = useContext(TodoContext);
 	useEffect(()=>{
 		document.title = "Add material | React 2"; 
-	},[]);
+
+		if(!localStorage.getItem('id')){
+    		navigate('/login');
+        }
+ 	},[]);
 
 
 

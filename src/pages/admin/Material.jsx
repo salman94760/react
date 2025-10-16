@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect,useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = ()=>{
@@ -24,7 +24,18 @@ const Dashboard = ()=>{
 
 
 	useEffect(()=>{
-		document.title = "Material | React 2"; 
+		document.title = "Material | React 2";
+
+		if(!localStorage.getItem('id')){
+    		navigate('/login');
+        }
+
+
+
+
+
+
+
 		const fetchProducts = async()=>{
 			try{
 				const response = await fetch("http://127.0.0.1:8000/api/products");

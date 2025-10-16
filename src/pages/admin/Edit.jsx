@@ -13,6 +13,9 @@ const MaterialEdit = ()=>{
   	const [message, setMessage] = useState("");
 	
 	useEffect(() => {
+		if(!localStorage.getItem('id')){
+    		navigate('/login');
+        }
     	fetch(`http://127.0.0.1:8000/api/products/${id}`)
       		.then((res) => res.json())
       		.then((data) => {
