@@ -43,9 +43,10 @@ function todoReducer(state, action) {
 export const TodoContext = createContext();
 
 export function TodoProvider({ children }) {
-  const [state, dispatch] = useReducer(todoReducer, initialState);
-  const navigate = useNavigate();
-  const [loginUser,setLoginUser] = useState({userid:"",username:"",useremail:""}); 
+  const navigate                  = useNavigate();
+  const [state, dispatch]         = useReducer(todoReducer, initialState);
+  const [loginUser,setLoginUser]  = useState({userid:"",username:"",useremail:""}); 
+  
   // Register User
   async function userRegister(data) {
   try {
@@ -71,6 +72,7 @@ export function TodoProvider({ children }) {
     }
   }
 
+  // login user
   async function login(arr){
     try{
       const res = await fetch(url+'login',{
@@ -97,11 +99,32 @@ export function TodoProvider({ children }) {
     }
   }
 
+  //logout user
   function logout(){
     setLoginUser({userid:"",username:"",useremail:""});
     localStorage.clear();
     navigate('/');
   }
+  
+  // add material to Database
+  async function addMaterial(link,data){
+    try {
+      const res = await fetch(url + link, {
+        method: "POST",
+        body: data
+      });
+      
+      if (res.ok) {
+        const result = await res.json();
+        navigate('/material');
+      } else {
+        console.error("Error:");
+      }
+      // dispatch({ type: "ADD_TODO", payload: newTodo });
+    } catch (error) {
+      // handle error
+    }
+  } 
 
   // Fetch todos example
   const fetchTodos = async () => {
@@ -115,20 +138,7 @@ export function TodoProvider({ children }) {
     }
   };
 
-  // Add todo example
-  const addTodo = async (text) => {
-    try {
-      const res = await fetch("https://api.example.com/todos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
-      });
-      const newTodo = await res.json();
-      dispatch({ type: "ADD_TODO", payload: newTodo });
-    } catch (error) {
-      // handle error
-    }
-  };
+  
 
   // Update todo example
   const updateTodo = async (updatedTodo) => {
@@ -161,15 +171,15 @@ export function TodoProvider({ children }) {
         todos: state.todos,
         loading: state.loading,
         error: state.error,
-        fetchTodos,
-        addTodo,
-        updateTodo,
-        deleteTodo,
+        // fetchTodos,
+        addMaterial,
+        // updateTodo,
+        // deleteTodo,
         userRegister,
         login,
         logout,
-        loginUser,
-        setLoginUser
+        // loginUser,
+        // setLoginUser
       }}
     >
       {children}
