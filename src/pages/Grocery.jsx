@@ -1,78 +1,115 @@
-import {useState,useEffect} from 'react';
+import {useState,useEffect,useContext} from 'react';
 import Modal from "../components/Modal";
+import {TodoContext} from '.././context/Context';
+
 const Grocery = () =>{
-	const [Product,setProduct] = useState([]);
+	const {Products,fetchProduct} = useContext(TodoContext);
+	
+
+	// const [Product,setProduct] = useState([]);
 	const [loading, setLoading] = useState(true);
   	const [error, setError] = useState("");
   	const [isOpen, setIsOpen] = useState(false);
 	useEffect(()=>{
-		const fetchProducts = async ()=>{
-			try{
-				const response = await fetch("http://127.0.0.1:8000/api/products");
-				const data = await response.json();
-				if(response.ok){
-					setProduct(data.data);	
-				}else{
-					setError(data.message || "Failed to fetch products");
-				}
-			}catch(err){
-				setError("Server not reachable");
-			}finally{
-				setLoading(false);
-			}
-		}
-		fetchProducts();
+		fetchProduct();
 	},[]);
 
 	const addToCart = ()=>{
-		const userId = localStorage.getItem('userId');
-		if(userId == null && userId == undefined){
-			setIsOpen(true);
-		}else{
-			console.log(userId);
-		}
+		// const userId = localStorage.getItem('userId');
+		// if(userId == null && userId == undefined){
+		// 	setIsOpen(true);
+		// }else{
+		// 	console.log(userId);
+		// }
 	}
 
 	const addToWishList = ()=>{
-		console.log("here1");
+		// console.log("here1");
 	}
 
 
 
 
-	if (loading) return <p>Loading...</p>;
-  	if (error) return <p className="text-red-500">{error}</p>;
+	// if (loading) return <p>Loading...</p>;
+  	// if (error) return <p className="text-red-500">{error}</p>;
 
 	return (
 		<>
 		<Modal type="signIn" setIsOpen={setIsOpen} isOpen={isOpen}/>
-			<div className="w-full">
-				<img className="w-full h-[330px]" src="" />
+			<div className="w-full bannerdiv">
+				
 			</div>
-			<div className="grid grid-cols-6 mt-4">
-				{Product.map((item,index)=>{
+			<div className="grid grid-cols-4 mt-4">
+				{Products.product.map((item,index)=>{
 					if(item.image){
 						var imageShow = item.image;
 					}else{
 						var imageShow = 'common.jpg';
 					}
 					return (
-						<div key={item.id} className="text-black m-1 border rounded p-4 ml-4 my-2">
-							<img src={`http://127.0.0.1:8000/uploads/${imageShow}`}  className="h-[150px]"/>
-							<div className="text-black">
-								<h1>Name: {item.name}</h1>
-								<h1>Price: {item.price}/- ({item.unit})</h1>
-							
-								<p>inc/dec 2</p>
-								<div className="flex">
-									<button onClick={addToCart} className="mr-[20px] hover:text-sm text-sm bg-black text-white hover:text-black hover:bg-white hover:border border-black rounded py-2 px-2 hover:leading-none hover:px-[0.4rem] hover:py-[0.4rem]">Add to cart</button>
-									<button onClick={addToWishList} className="bg-black text-white hover:text-black hover:bg-white hover:border border-black rounded py-2 px-2 hover:text-sm">Whishlist</button>
-								</div>
-							</div>
-						</div>	
+					<div key={item.id} className="product-card">
+  <div className="product-image">
+    <img src={`http://127.0.0.1:8000/uploads/${imageShow}`} alt="Fresh Salad" />
+  </div>
+
+  <div className="product-content">
+    <div className="product-name">{item.name}</div>
+    <div className="product-price">{item.price} / {item.unit}</div>
+
+    {/* ✅ NEW DESCRIPTION BLOCK */}
+    <div className="product-description">
+      <p>{item.description}</p>
+    </div>
+
+    <div className="quantity">
+      <span>Quantity:</span>
+      <div className="qty-btns">
+        <button><i className="fas fa-minus"></i></button>
+        <span>2</span>
+        <button><i className="fas fa-plus"></i></button>
+      </div>
+    </div>
+
+    <div className="actions">
+      <button className="cart-btn"><i className="fas fa-shopping-cart"></i> Add</button>
+      <button className="wishlist-btn"><i className="fas fa-heart"></i> Save</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+						
+
 					);
 				})}
 			</div>
+
+			
 		</>
 	);
 }

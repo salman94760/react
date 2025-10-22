@@ -1,6 +1,6 @@
 import { useState, useEffect,useContext } from 'react';
 import { useNavigate } from "react-router-dom";
-
+import { NavLink, Outlet } from "react-router-dom";
 const Dashboard = ()=>{
 	const navigate = useNavigate();
 	const [products, setProducts] = useState([]);
@@ -60,7 +60,8 @@ const Dashboard = ()=>{
 	return (
 		<>
 		<div className="w-full p-8">
-			<h2 className="-mt-10 text-[45px] text-center p-4">Material list</h2>
+			<div><button className="btn btn-success"><NavLink to="/add-material" className="text-[20px] font-normal hover:text-gray-300">Add(+)</NavLink></button></div>
+			<h2 className="-mt-10 text-[45px] text-center p-4">Product list</h2>
 		<table className="w-full border-collapse border border-gray-800 text-center">
   			<thead>
     			<tr>
@@ -78,7 +79,7 @@ const Dashboard = ()=>{
       					<td className="border border-gray-300">{item.id}</td>
       					<td className="border border-gray-300">{item.name}</td>
       					<td className="border border-gray-300">{item.description}</td>
-      					<td className="border border-gray-300">{item.image}</td>
+      					<td className="border border-gray-300"><img className="w-[170px]" src={`http://127.0.0.1:8000/uploads/`+item.image} /></td>
       					<td className="border border-gray-300">
       						<button className="bg-blue-300 rounded py-1 px-3 m-1" onClick={() => navigate(`/edit-material/${item.id}`)}>Edit</button>
       						<button onClick={() => handleDelete(item.id)} className="bg-red-500 rounded py-1 px-3 m-1">Delete</button>

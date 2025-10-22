@@ -2,7 +2,7 @@ import React, { createContext, useReducer,useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
 const initialState = {
-  todos: [],
+  product: [],
   loading: false,
   error: null,
 };
@@ -14,7 +14,7 @@ function todoReducer(state, action) {
     case "FETCH_TODOS_START":
       return { ...state, loading: true, error: null };
     case "FETCH_TODOS_SUCCESS":
-      return { ...state, loading: false, todos: action.payload };
+      return { ...state, loading: false, product: action.payload };
     case "FETCH_TODOS_ERROR":
       return { ...state, loading: false, error: action.payload };
 
@@ -44,7 +44,7 @@ export const TodoContext = createContext();
 
 export function TodoProvider({ children }) {
   const navigate                  = useNavigate();
-  const [state, dispatch]         = useReducer(todoReducer, initialState);
+  const [Products, dispatch]         = useReducer(todoReducer, initialState);
   const [loginUser,setLoginUser]  = useState({userid:"",username:"",useremail:""}); 
   
   // Register User
@@ -127,15 +127,57 @@ export function TodoProvider({ children }) {
   } 
 
   // Fetch todos example
-  const fetchTodos = async () => {
-    dispatch({ type: "FETCH_TODOS_START" });
-    try {
-      const res = await fetch("https://api.example.com/todos");
-      const data = await res.json();
-      dispatch({ type: "FETCH_TODOS_SUCCESS", payload: data });
-    } catch (error) {
-      dispatch({ type: "FETCH_TODOS_ERROR", payload: error.message });
+  const fetchProduct = async () => {
+    try{
+      const response = await fetch(url+'products');
+      const result = await response.json();
+      if(response.ok){
+        dispatch({ type: "FETCH_TODOS_SUCCESS", payload: result.data });  
+      }
+
+
+
+
+      // const fetchProducts = async ()=>{
+    //  try{
+    //    const response = await fetch("http://127.0.0.1:8000/api/products");
+    //    const data = await response.json();
+    //    if(response.ok){
+    //      setProduct(data.data);  
+    //    }else{
+    //      setError(data.message || "Failed to fetch products");
+    //    }
+    //  }catch(err){
+    //    setError("Server not reachable");
+    //  }finally{
+    //    setLoading(false);
+    //  }
+    // }
+    // fetchProducts();
+    }catch(err){
+
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // dispatch({ type: "FETCH_TODOS_START" });
+    // try {
+    //   const res = await fetch("https://api.example.com/todos");
+    //   const data = await res.json();
+    //   dispatch({ type: "FETCH_TODOS_SUCCESS", payload: data });
+    // } catch (error) {
+    //   dispatch({ type: "FETCH_TODOS_ERROR", payload: error.message });
+    // }
   };
 
   
@@ -168,11 +210,12 @@ export function TodoProvider({ children }) {
   return (
     <TodoContext.Provider
       value={{
-        todos: state.todos,
-        loading: state.loading,
-        error: state.error,
-        // fetchTodos,
+        // todos: state.todos,
+        // loading: state.loading,
+        // error: state.error,
         addMaterial,
+        Products,
+        fetchProduct,
         // updateTodo,
         // deleteTodo,
         userRegister,

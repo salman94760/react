@@ -23,8 +23,8 @@ const Navbar = ()=>{
   					localStorage.getItem('id')?
   					<>
   						<li className="text-[20px] font-normal hover:text-gray-300">Welcome <strong>{localStorage.getItem('name')}</strong></li>
-  						<li className={navItemClass}><NavLink style={linkStyle} to="/add-material" className="text-[20px] font-normal hover:text-gray-300">Add material</NavLink></li>
-  						<li className={navItemClass}><NavLink style={linkStyle} to="/edit-material/:id" className="text-[20px] font-normal hover:text-gray-300">Edit material</NavLink></li>
+  						{/*<li className={navItemClass}><NavLink style={linkStyle} to="/add-material" className="text-[20px] font-normal hover:text-gray-300">Add product</NavLink></li>*/}
+  						{/*<li className={navItemClass}><NavLink style={linkStyle} to="/edit-material/:id" className="text-[20px] font-normal hover:text-gray-300">Edit product</NavLink></li>*/}
   						<li className={navItemClass}><NavLink style={linkStyle} to="/login" className="text-[20px] font-normal hover:text-gray-300" onClick={logout}>Logout</NavLink></li>
   					</>
   					:

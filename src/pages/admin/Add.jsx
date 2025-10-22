@@ -1,11 +1,12 @@
 import {useState,useEffect, useContext} from 'react';
 import { TodoContext } from "../../context/Context";
 import { useNavigate } from 'react-router-dom';
+
 const MaterialAdd = ()=>{
 	const navigate = useNavigate();
 	const {addMaterial} = useContext(TodoContext);
 	useEffect(()=>{
-		document.title = "Add Material"; 
+		document.title = "Add product"; 
 		if(!localStorage.getItem('id')){navigate('/login');}
  	},[]);
 
@@ -20,92 +21,69 @@ const MaterialAdd = ()=>{
 			if (file) {
 				setPreview(URL.createObjectURL(file));
 			}
-   	} else {
-    	setFormData({ ...formData, [e.target.name]: e.target.value });
-    }
+   		} else {
+    		setFormData({ ...formData, [e.target.name]: e.target.value });
+    	}
 	}
 	
 	const handleSubmit = async (e)=>{
 		e.preventDefault();
 
 		if (!formData.name.trim()) {
-    	setMessage("Material name is required");
-    	return;
-  	}
+    		setMessage("Product name is required");
+    		return;
+  		}
 		
 		if (!formData.description.trim()) {
-    	setMessage("Material description is required");
-    	return;
-  	}
+    		setMessage("Product description is required");
+    		return;
+  		}
 		
 		if (!formData.price || isNaN(formData.price) || Number(formData.price) <= 0) {
-    	setMessage("Please enter a valid price");
-    	return;
-  	}
+    		setMessage("Please enter a valid price");
+    		return;
+  		}
 
-  	if (!formData.unit) {
-    	setMessage("Please select a unit");
-    	return;
-  	}
-		
+  		if (!formData.unit) {
+    		setMessage("Please select a unit");
+    		return;
+  		}
+	
 		const data = new FormData();
-  	data.append("name", formData.name);
-  	data.append("description", formData.description);
-  	data.append("price", formData.price);
-  	data.append("unit", formData.unit);
-  	data.append("image", formData.image);
-  	data.append("useremail", localStorage.getItem('email'));
-  	addMaterial('products',data);
-
-
-
-
-
-  // 	try {
-  //   	const response = await fetch("http://127.0.0.1:8000/api/products", {
-  //     	method: "POST",
-  //     	body: data,
-  //   	});
-
-  //   	const result = await response.json();
-
-  //   	if (response.ok) {
-  //     	setMessage(result.message);
-  //     	setFormData({ name: "", description: "", price: "0.00", image: "" });
-  //     	setPreview(null);
-  //   	} else {
-  //     setMessage(result.message || "Something went wrong");
-  //   }
-  // } catch (error) {
-  //   setMessage("Server not reachable");
-  // }
-	}
+  		data.append("name", formData.name);
+  		data.append("description", formData.description);
+  		data.append("price", formData.price);
+  		data.append("unit", formData.unit);
+  		data.append("image", formData.image);
+  		data.append("useremail", localStorage.getItem('email'));
+  		addMaterial('products',data);
+  	}
 
 
 	return (
 		<>
 			<div className="grid grid-cols-1">
-				<div className="text-black text-center"><h2 className="text-[45px] text-center p-4">Add Material</h2></div>
+				<div className="text-black text-center"><h2 className="text-[45px] text-center p-4">Add Product</h2></div>
     			<div className="text-black text-center content-center">
     				<form onSubmit={handleSubmit} className="max-w-lg mx-auto border-2 border-grey-500 rounded p-8">
     					<div className="mb-5">
-    						<label for="email" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Material name</label>
+    						<label for="email" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product name</label>
     						<input name="name" value={formData.name} onChange={handleChange} type="text" id="fullname" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Material name" required />
   						</div>
 
   						<div className="mb-5">
-    						<label for="description" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Material Description</label>
+    						<label for="description" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Description</label>
     						<input name="description" value={formData.description} onChange={handleChange} type="text" id="fullname" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Material description" required />
   						</div>
 
   						<div className="grid grid-cols-2">
   							<div className="mb-5 mr-3">
-    							<label for="price" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Material Price</label>
+    							<label for="price" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Price</label>
     							<input name="price" value={formData.price} onChange={handleChange} type="text" id="fullname" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Material Price" required />
   							</div>
 
   							<div className="mb-5">
-    							<label for="unit" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Material unit</label>
+    							<label for="unit" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product unit</label>
     							<select value={formData.unit} onChange={handleChange} name="unit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
     								<option>Select unit</option>
     								<option value="Kg">Kg</option>
@@ -116,7 +94,7 @@ const MaterialAdd = ()=>{
   						</div>
 
   						<div className="mb-5">
-    						<label for="email" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Material Image</label>
+    						<label for="email" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Image</label>
     						<input name="image" accept="image/*" onChange={handleChange} type="file" id="fullname" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Full name" />
   						</div>
   						<div className="mb-5">
