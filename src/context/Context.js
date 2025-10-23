@@ -134,68 +134,26 @@ export function TodoProvider({ children }) {
       if(response.ok){
         dispatch({ type: "FETCH_TODOS_SUCCESS", payload: result.data });  
       }
-
-
-
-
-      // const fetchProducts = async ()=>{
-    //  try{
-    //    const response = await fetch("http://127.0.0.1:8000/api/products");
-    //    const data = await response.json();
-    //    if(response.ok){
-    //      setProduct(data.data);  
-    //    }else{
-    //      setError(data.message || "Failed to fetch products");
-    //    }
-    //  }catch(err){
-    //    setError("Server not reachable");
-    //  }finally{
-    //    setLoading(false);
-    //  }
-    // }
-    // fetchProducts();
     }catch(err){
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // dispatch({ type: "FETCH_TODOS_START" });
-    // try {
-    //   const res = await fetch("https://api.example.com/todos");
-    //   const data = await res.json();
-    //   dispatch({ type: "FETCH_TODOS_SUCCESS", payload: data });
-    // } catch (error) {
-    //   dispatch({ type: "FETCH_TODOS_ERROR", payload: error.message });
-    // }
   };
 
+  const deleteProduct = async (id) => {
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/api/products/${id}`, {method: "DELETE",});
+        const data = await response.json();
+        if (response.ok) {
+          const updatedProducts = Products.product.filter((item) => item.id !== id);
+          dispatch({ type: "FETCH_TODOS_SUCCESS", payload: updatedProducts });  
+        }
+      } catch (error) {
+        // setError("Server not reachable");
+      }
+  };
   
 
-  // Update todo example
-  const updateTodo = async (updatedTodo) => {
-    try {
-      const res = await fetch(`https://api.example.com/todos/${updatedTodo.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedTodo),
-      });
-      const data = await res.json();
-      dispatch({ type: "UPDATE_TODO", payload: data });
-    } catch (error) {
-      // handle error
-    }
-  };
+  
 
   // Delete todo example
   const deleteTodo = async (id) => {
@@ -208,22 +166,7 @@ export function TodoProvider({ children }) {
   };
 
   return (
-    <TodoContext.Provider
-      value={{
-        // todos: state.todos,
-        // loading: state.loading,
-        // error: state.error,
-        addMaterial,
-        Products,
-        fetchProduct,
-        // updateTodo,
-        // deleteTodo,
-        userRegister,
-        login,
-        logout,
-        // loginUser,
-        // setLoginUser
-      }}
+    <TodoContext.Provider value={{addMaterial,Products,fetchProduct,deleteProduct,userRegister,login,logout}}
     >
       {children}
     </TodoContext.Provider>

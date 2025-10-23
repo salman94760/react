@@ -7,7 +7,7 @@ const MaterialAdd = ()=>{
 	const {addMaterial} = useContext(TodoContext);
 	useEffect(()=>{
 		document.title = "Add product"; 
-		if(!localStorage.getItem('id')){navigate('/login');}
+		if(!localStorage.getItem('id')){navigate('/AdminLogin');}
  	},[]);
 
  	const [formData,setFormData] = useState({name:'',description:'',price:'',image:''});
@@ -73,18 +73,18 @@ const MaterialAdd = ()=>{
 
   						<div className="mb-5">
     						<label for="description" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Description</label>
-    						<input name="description" value={formData.description} onChange={handleChange} type="text" id="fullname" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Material description" required />
+    						<input name="description" value={formData.description} onChange={handleChange} type="text" id="description" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Material description" required />
   						</div>
 
   						<div className="grid grid-cols-2">
   							<div className="mb-5 mr-3">
     							<label for="price" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Price</label>
-    							<input name="price" value={formData.price} onChange={handleChange} type="text" id="fullname" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Material Price" required />
+    							<input name="price" value={formData.price} onChange={handleChange} type="text" id="price" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Material Price" required />
   							</div>
 
   							<div className="mb-5">
     							<label for="unit" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product unit</label>
-    							<select value={formData.unit} onChange={handleChange} name="unit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+    							<select value={formData.unit} onChange={handleChange} id="unit" name="unit" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
     								<option>Select unit</option>
     								<option value="Kg">Kg</option>
     								<option value="Piece">Piece</option>
@@ -95,7 +95,7 @@ const MaterialAdd = ()=>{
 
   						<div className="mb-5">
     						<label for="email" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Image</label>
-    						<input name="image" accept="image/*" onChange={handleChange} type="file" id="fullname" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Full name" />
+    						<input name="image" accept="image/*" onChange={handleChange} type="file" id="image" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Full name" />
   						</div>
   						<div className="mb-5">
     						<label for="email" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Preview</label>
