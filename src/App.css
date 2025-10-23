@@ -118,3 +118,38 @@
   margin: 10px 0;
   line-height: 1.4;
 }
+/********loader css********/
+.grocery-loader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #fffbe6;
+  font-family: "Poppins", sans-serif;
+  color: #2d3436;
+}
+
+.cart {
+  font-size: 3rem;
+  animation: bounce 1s infinite alternate ease-in-out;
+}
+
+.text {
+  margin-top: 15px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #27ae60;
+  letter-spacing: 0.5px;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-15px);
+  }
+}
+
+/********loader css********/

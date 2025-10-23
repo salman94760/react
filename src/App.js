@@ -6,7 +6,7 @@ import './App.css';
 import { useLocation } from 'react-router-dom';
 function App() {
    const location = useLocation();
-   console.log(location.pathname);
+   
   return (
     <TodoProvider>
     {(location.pathname === '/admin-login' || location.pathname === '/admin-register' || location.pathname === '/material' || location.pathname === '/add-material') ? <AdminNavbar /> : <Navbar />}

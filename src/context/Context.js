@@ -1,11 +1,7 @@
 import React, { createContext, useReducer,useState } from "react";
 import { useNavigate } from 'react-router-dom';
-
-const initialState = {
-  product: [],
-  loading: false,
-  error: null,
-};
+import Loader from "../components/Loader";
+const initialState = {product: [],loading: false,error: null};
 
 const url = "http://127.0.0.1:8000/api/";
 
@@ -44,31 +40,30 @@ export const TodoContext = createContext();
 
 export function TodoProvider({ children }) {
   const navigate                  = useNavigate();
-  const [Products, dispatch]         = useReducer(todoReducer, initialState);
+  const [Products, dispatch]      = useReducer(todoReducer, initialState);
   const [loginUser,setLoginUser]  = useState({userid:"",username:"",useremail:""}); 
+  const [loading, setLoading]     = useState(false);
+  const [msg, setMsg]             = useState({msg:"",type:""});
   
   // Register User
   async function userRegister(data) {
-  try {
-    const res = await fetch(url+'register', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    try {
+      const res = await fetch(url+'register', {
+        method: "POST",
+        headers: {"Content-Type": "application/json",},
+        body: JSON.stringify(data),
+      });
 
       const result = await res.json();
       if (res.ok) {
-        navigate('/login');
-        return 1; // success
+        setMsg({ msg: "User registered successfully!", type: "success" });
+        navigate('/admin-login');
       } else {
-        return 2; // server responded with error
+        setMsg({ msg: "Something went wrong!", type: "warning" });
       }
 
     } catch (e) {
-      console.error("Register Error:", e);
-      return 0; // network or unknown error
+      setMsg({ msg: e, type: "error" });
     }
   }
 
@@ -85,17 +80,15 @@ export function TodoProvider({ children }) {
         localStorage.setItem('id', result.user.id);
         localStorage.setItem('name',result.user.name);
         localStorage.setItem('email', result.user.email);
-        
-          setLoginUser({
-            userid: result.user.id,
-            username: result.user.name,
-            useremail: result.user.email
-          });
-        
+        setLoginUser({
+          userid: result.user.id,
+          username: result.user.name,
+          useremail: result.user.email
+        });
         navigate('/material');
       }
     }catch(err){
-
+      setMsg({ msg: err, type: "error" });
     }
   }
 
@@ -116,23 +109,25 @@ export function TodoProvider({ children }) {
       
       if (res.ok) {
         const result = await res.json();
+        setMsg({ msg: "Grocery added successfully", type: "success" });
         navigate('/material');
       } else {
-        console.error("Error:");
+        setMsg({ msg: "Something went wrong", type: "warning" });
       }
-      // dispatch({ type: "ADD_TODO", payload: newTodo });
-    } catch (error) {
-      // handle error
+    } catch (err) {
+        setMsg({ msg: err, type: "error" });
     }
   } 
 
   // Fetch todos example
   const fetchProduct = async () => {
+    setLoading(true);
     try{
       const response = await fetch(url+'products');
       const result = await response.json();
       if(response.ok){
         dispatch({ type: "FETCH_TODOS_SUCCESS", payload: result.data });  
+        setLoading(false);
       }
     }catch(err){
 
@@ -140,33 +135,20 @@ export function TodoProvider({ children }) {
   };
 
   const deleteProduct = async (id) => {
-      try {
-        const response = await fetch(`http://127.0.0.1:8000/api/products/${id}`, {method: "DELETE",});
-        const data = await response.json();
-        if (response.ok) {
-          const updatedProducts = Products.product.filter((item) => item.id !== id);
-          dispatch({ type: "FETCH_TODOS_SUCCESS", payload: updatedProducts });  
-        }
-      } catch (error) {
-        // setError("Server not reachable");
-      }
-  };
-  
-
-  
-
-  // Delete todo example
-  const deleteTodo = async (id) => {
     try {
-      await fetch(`https://api.example.com/todos/${id}`, { method: "DELETE" });
-      dispatch({ type: "DELETE_TODO", payload: id });
+      const response = await fetch(`${url}products/${id}`, {method: "DELETE",});
+      const data = await response.json();
+      if (response.ok) {
+        setMsg({ msg: "Grocery deleted successfully", type: "success" });
+        const updatedProducts = Products.product.filter((item) => item.id !== id);
+        dispatch({ type: "FETCH_TODOS_SUCCESS", payload: updatedProducts });  
+      }
     } catch (error) {
-      // handle error
+      setMsg({ msg: error, type: "success" });
     }
   };
-
   return (
-    <TodoContext.Provider value={{addMaterial,Products,fetchProduct,deleteProduct,userRegister,login,logout}}
+    <TodoContext.Provider value={{addMaterial,Products,fetchProduct,deleteProduct,userRegister,login,logout,Loader,loading}}
     >
       {children}
     </TodoContext.Provider>

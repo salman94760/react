@@ -3,11 +3,11 @@ import Modal from "../components/Modal";
 import {TodoContext} from '.././context/Context';
 
 const Grocery = () =>{
-	const {Products,fetchProduct} = useContext(TodoContext);
+	const {Products,fetchProduct,Loader,loading} = useContext(TodoContext);
 	
 
-	// const [Product,setProduct] = useState([]);
-	const [loading, setLoading] = useState(true);
+	
+	
   	const [error, setError] = useState("");
   	const [isOpen, setIsOpen] = useState(false);
 	useEffect(()=>{
@@ -22,19 +22,14 @@ const Grocery = () =>{
 		// 	console.log(userId);
 		// }
 	}
-
 	const addToWishList = ()=>{
 		// console.log("here1");
 	}
 
-
-
-
-	// if (loading) return <p>Loading...</p>;
-  	// if (error) return <p className="text-red-500">{error}</p>;
-
+	if (loading) return <Loader />;
 	return (
 		<>
+		
 		<Modal type="signIn" setIsOpen={setIsOpen} isOpen={isOpen}/>
 			<div className="w-full bannerdiv">
 				
@@ -56,7 +51,6 @@ const Grocery = () =>{
     <div className="product-name">{item.name}</div>
     <div className="product-price">{item.price} / {item.unit}</div>
 
-    {/* ✅ NEW DESCRIPTION BLOCK */}
     <div className="product-description">
       <p>{item.description}</p>
     </div>

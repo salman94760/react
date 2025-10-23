@@ -7,7 +7,7 @@ const MaterialAdd = ()=>{
 	const {addMaterial} = useContext(TodoContext);
 	useEffect(()=>{
 		document.title = "Add product"; 
-		if(!localStorage.getItem('id')){navigate('/AdminLogin');}
+		if(!localStorage.getItem('id')){navigate('/admin-login');}
  	},[]);
 
  	const [formData,setFormData] = useState({name:'',description:'',price:'',image:''});
