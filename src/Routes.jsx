@@ -1,8 +1,8 @@
 import React from 'react';
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-// import Login from "./pages/Login";
-// import Register from "./pages/Register";
+import Login from "./pages/user/Login";
+import Register from "./pages/user/Register";
 import Material from "./pages/admin/Material";
 import MaterialAdd from "./pages/admin/Add";
 import MaterialEdit from "./pages/admin/Edit";
@@ -27,8 +27,8 @@ const Router = ()=>{
             {/*****admin section******/}
 
             <Route path="/" element={<Grocery />} />
-            {/*<Route path="/login" element={<Login />} />*/}
-            {/*<Route path="/register" element={<Register />} />*/}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
             <Route path="/material" element={<Material />} />
             <Route path="/add-material" element={<MaterialAdd />} />

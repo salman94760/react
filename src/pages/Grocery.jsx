@@ -3,18 +3,14 @@ import Modal from "../components/Modal";
 import {TodoContext} from '.././context/Context';
 
 const Grocery = () =>{
-	const {Products,fetchProduct,Loader,loading} = useContext(TodoContext);
+	const {Products,fetchProduct,Loader,loading,addToCart} = useContext(TodoContext);
+	const [isOpen, setIsOpen] = useState(false);
 	
-
-	
-	
-  	const [error, setError] = useState("");
-  	const [isOpen, setIsOpen] = useState(false);
 	useEffect(()=>{
 		fetchProduct();
 	},[]);
 
-	const addToCart = ()=>{
+	const goToCart = ()=>{
 		// const userId = localStorage.getItem('userId');
 		// if(userId == null && userId == undefined){
 		// 	setIsOpen(true);
@@ -65,7 +61,7 @@ const Grocery = () =>{
     </div>
 
     <div className="actions">
-      <button className="cart-btn"><i className="fas fa-shopping-cart"></i> Add</button>
+      <button onClick={()=>addToCart({'id':item.id,'name':item.name,'price':item.price,'user_id':localStorage.getItem('id')})} className="cart-btn"><i className="fas fa-shopping-cart"></i> Add</button>
       <button className="wishlist-btn"><i className="fas fa-heart"></i> Save</button>
     </div>
   </div>

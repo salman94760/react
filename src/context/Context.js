@@ -143,12 +143,37 @@ export function TodoProvider({ children }) {
         const updatedProducts = Products.product.filter((item) => item.id !== id);
         dispatch({ type: "FETCH_TODOS_SUCCESS", payload: updatedProducts });  
       }
-    } catch (error) {
-      setMsg({ msg: error, type: "success" });
+    } catch (err) {
+      setMsg({ msg: err, type: "error" });
     }
   };
+
+  const addToCart = async (data)=>{
+    if(!localStorage.getItem('id')){
+      setMsg({ msg: "Please login", type: "error"});
+      
+      
+    }else{
+      try{
+        const response = await fetch(url+'cart',{
+          method:"POST",
+          headers:{"Content-Type": "application/json",},
+          body:JSON.stringify(data)
+        });
+        const result = await response.json();
+        if(response.ok){
+          setMsg({ msg: "Grocery added to cart", type: "success" });
+        }else{
+          setMsg({ msg: "Something went wrong", type: "success" });
+        }
+      }catch(err){
+        setMsg({ msg: err, type: "error" });
+      }  
+    }
+  }
+
   return (
-    <TodoContext.Provider value={{addMaterial,Products,fetchProduct,deleteProduct,userRegister,login,logout,Loader,loading}}
+    <TodoContext.Provider value={{addMaterial,Products,fetchProduct,deleteProduct,userRegister,login,logout,Loader,loading,addToCart,msg}}
     >
       {children}
     </TodoContext.Provider>

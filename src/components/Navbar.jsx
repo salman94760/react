@@ -27,8 +27,8 @@ const Navbar = ()=>{
   					</>
   					:
   					<>
-  					<li><NavLink style={linkStyle} to="/admin-register" className="text-[20px] font-normal hover:text-gray-300">Register</NavLink></li>
-  					<li><NavLink style={linkStyle} to="/admin-login" className="text-[20px] font-normal hover:text-gray-300">Login</NavLink></li>
+  					<li><NavLink style={linkStyle} to="/register" className="text-[20px] font-normal hover:text-gray-300">Register</NavLink></li>
+  					<li><NavLink style={linkStyle} to="/login" className="text-[20px] font-normal hover:text-gray-300">Login</NavLink></li>
   					</>
   				}
   				
