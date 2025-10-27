@@ -150,9 +150,7 @@ export function TodoProvider({ children }) {
 
   const addToCart = async (data)=>{
     if(!localStorage.getItem('id')){
-      setMsg({ msg: "Please login", type: "error"});
-      
-      
+      navigate('/login');
     }else{
       try{
         const response = await fetch(url+'cart',{

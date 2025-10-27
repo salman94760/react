@@ -88,22 +88,23 @@
       padding: 10px;
       border: none;
       border-radius: 8px;
-      color: #fff;
       font-weight: bold;
       cursor: pointer;
       margin: 0 5px;
       transition: 0.3s;
     }
-
+    
     .cart-btn {
+      font-weight: 600;
+      color:#fff;
       background-color: #000;
     }
-
     .cart-btn:hover {
-      background-color: #fff;
-      border:1px solid #000;
-      color:#000;
+      color: #000;
+      background-color: #27ae60;
     }
+
+
 
     .wishlist-btn {
       background-color: #e74c3c;
