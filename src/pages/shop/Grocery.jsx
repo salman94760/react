@@ -1,6 +1,6 @@
 import {useState,useEffect,useContext} from 'react';
-import Modal from "../components/Modal";
-import {TodoContext} from '.././context/Context';
+import Modal from "../../components/Modal";
+import {TodoContext} from '../../context/Context';
 
 const Grocery = () =>{
 	const {Products,fetchProduct,Loader,loading,addToCart} = useContext(TodoContext);

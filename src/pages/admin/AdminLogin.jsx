@@ -1,6 +1,6 @@
 import {useContext,useState} from 'react';
-import {TodoContext} from '../context/Context';
-const Login = ()=>{
+import {TodoContext} from '../../context/Context';
+const AdminLogin = ()=>{
 	const [formData,setFormData] = useState({email:"",password:""})
 	const {login} = useContext(TodoContext);
 
@@ -47,4 +47,4 @@ const Login = ()=>{
 	);
 }
 
-export default Login;
+export default AdminLogin;

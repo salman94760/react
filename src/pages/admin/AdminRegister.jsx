@@ -1,7 +1,7 @@
 import React, { useContext,useState,useEffect } from "react";
-import { TodoContext } from "../context/Context";
+import { TodoContext } from "../../context/Context";
 import { useNavigate } from 'react-router-dom';
-const Register = ()=>{
+const AdminRegister = ()=>{
 	const navigate = useNavigate();
 	const {userRegister,setLoginUser} = useContext(TodoContext);
 	const [formData,setFormData] = useState({fullname:"",email:"",phone:"",address:""});
@@ -61,4 +61,4 @@ const Register = ()=>{
 	);
 }
 
-export default Register;
+export default AdminRegister;
