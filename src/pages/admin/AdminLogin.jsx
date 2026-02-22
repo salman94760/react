@@ -1,5 +1,7 @@
 import {useContext,useState} from 'react';
 import {TodoContext} from '../../context/Context';
+import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 const AdminLogin = ()=>{
 	const [formData,setFormData] = useState({email:"",password:""})
 	const {login} = useContext(TodoContext);
@@ -16,6 +18,10 @@ const AdminLogin = ()=>{
     };
 	return (
 		<>
+		<Helmet>
+        <title>Admin login</title>
+        <link rel="icon" type="image/png" href="/home-icon.png" />
+      </Helmet>
 			<div className="grid grid-cols-2">
 				<div className="text-black text-center h-screen content-center"><h2 className="text-[100px] text-italic italic font-medium font-[roboto]">Login</h2></div>
     			<div className="text-black text-center content-center">
@@ -35,8 +41,8 @@ const AdminLogin = ()=>{
     					<div className="flex items-center h-5">
       					<input id="remember" type="checkbox" value="" className="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" />
     					</div>
-    					
-    						<label for="remember" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Remember me</label>
+    					<label for="remember" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Remember me</label>
+    					<label for="remember" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Not registered? <Link className="text-red-500 underline" to="/admin/register">Register now.</Link></label>
   					</div>
   					
   					<button type="submit" className="text-left text-white bg-black hover:bg-white hover:text-black hover:border hover:border-black py-2 px-4 rounded">Submit</button>

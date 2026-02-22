@@ -11,7 +11,7 @@ function App() {
    
   return (
     <TodoProvider>
-    {(location.pathname === '/admin-login' || location.pathname === '/admin-register' || location.pathname === '/material' || location.pathname === '/add-material') ? <AdminNavbar /> : <Navbar />}
+    
 
       <AdminRouter />
       <Router />

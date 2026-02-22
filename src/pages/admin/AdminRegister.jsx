@@ -1,6 +1,8 @@
 import React, { useContext,useState,useEffect } from "react";
 import { TodoContext } from "../../context/Context";
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 const AdminRegister = ()=>{
 	const navigate = useNavigate();
 	const {userRegister,setLoginUser} = useContext(TodoContext);
@@ -30,6 +32,10 @@ const AdminRegister = ()=>{
 
     return (
 		<>
+		<Helmet>
+        <title>Admin register</title>
+        <link rel="icon" type="image/png" href="/home-icon.png" />
+      </Helmet>
 			<div className="grid grid-cols-2">
 				<div className="text-black text-center h-screen content-center"><h2 className="text-[100px] text-italic italic font-medium font-[roboto]">Register</h2></div>
     			<div className="text-black text-center content-center">
@@ -52,6 +58,10 @@ const AdminRegister = ()=>{
   						<div className="mb-5">
     						<label for="email" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
     							<textarea value={formData.address} onChange={handleChange} id="address" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+  						</div>
+
+  						<div className="mb-5 text-left">
+  							<label for="remember" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Have an account? <Link className="text-red-500 underline" to="/admin/login">Sign in</Link></label>
   						</div>
   						<button type="submit" className="text-left text-white bg-black hover:bg-white hover:text-black hover:border hover:border-black py-2 px-4 rounded">Register</button>
   					</form>
