@@ -1,8 +1,8 @@
 import React, { createContext, useReducer,useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import Loader from "../components/Loader";
+import { msgError,msgSuccess } from '../utils/helpers';
 const initialState = {product: [],loading: false,error: null};
-
 const url = "http://127.0.0.1:8000/api/";
 
 function todoReducer(state, action) {
@@ -43,10 +43,12 @@ export function TodoProvider({ children }) {
   const [Products, dispatch]      = useReducer(todoReducer, initialState);
   const [loginUser,setLoginUser]  = useState({userid:"",username:"",useremail:""}); 
   const [loading, setLoading]     = useState(false);
+  const [adminloading, setAdminLoading] = useState(false);
   const [msg, setMsg]             = useState({msg:"",type:""});
   
   // Register User
   async function userRegister(data) {
+    setAdminLoading(true);
     try {
       const res = await fetch(url+'register', {
         method: "POST",
@@ -55,15 +57,24 @@ export function TodoProvider({ children }) {
       });
 
       const result = await res.json();
+      if(result.errors){
+        if(result.errors.email[0]){
+          msgError(result.errors.email[0]);
+          setAdminLoading(false);
+        }
+      }
+
       if (res.ok) {
-        setMsg({ msg: "User registered successfully!", type: "success" });
-        navigate('/admin-login');
+        msgSuccess("User registered successfully!");
+        navigate('/admin/login');
       } else {
-        setMsg({ msg: "Something went wrong!", type: "warning" });
+        msgError("Something went wrong!");
       }
 
     } catch (e) {
-      setMsg({ msg: e, type: "error" });
+      console.log(e);
+    }finally{
+      setAdminLoading(false);
     }
   }
 
@@ -85,7 +96,7 @@ export function TodoProvider({ children }) {
           username: result.user.name,
           useremail: result.user.email
         });
-        navigate('/material');
+        navigate('/AdminDashboard');
       }
     }catch(err){
       setMsg({ msg: err, type: "error" });
@@ -171,7 +182,7 @@ export function TodoProvider({ children }) {
   }
 
   return (
-    <TodoContext.Provider value={{addMaterial,Products,fetchProduct,deleteProduct,userRegister,login,logout,Loader,loading,addToCart,msg}}
+    <TodoContext.Provider value={{addMaterial,Products,fetchProduct,deleteProduct,userRegister,login,logout,Loader,loading,adminloading,addToCart,msg}}
     >
       {children}
     </TodoContext.Provider>

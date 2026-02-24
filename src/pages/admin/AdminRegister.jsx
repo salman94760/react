@@ -3,10 +3,12 @@ import { TodoContext } from "../../context/Context";
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
+import { msgError } from '../../utils/helpers.js';
+import { ClipLoader } from "react-spinners";
 const AdminRegister = ()=>{
 	const navigate = useNavigate();
-	const {userRegister,setLoginUser} = useContext(TodoContext);
-	const [formData,setFormData] = useState({fullname:"",email:"",phone:"",address:""});
+	const {userRegister,setLoginUser,adminloading} = useContext(TodoContext);
+	const [formData,setFormData] = useState({fullname:"",email:"",phone:"",address:"",role:"admin"});
 
 	const handleChange = (e) => {
     	const { id, value } = e.target;
@@ -15,6 +17,16 @@ const AdminRegister = ()=>{
 
   	const handleSubmit = (e) => {
     	e.preventDefault();
+    	if(formData.fullname === ''){
+    		msgError("Name must not be empty");
+    		return;
+    	}if(formData.email === ''){
+    		msgError("Email must not be empty");
+    		return;
+    	}if(formData.phone === ''){
+    		msgError("Phone must not be empty");
+    		return;
+    	}
     	userRegister(formData);
     	setFormData({fullname: "",email: "",phone: "",address: "",});
     };
@@ -42,17 +54,17 @@ const AdminRegister = ()=>{
     				<form onSubmit={handleSubmit} className="max-w-sm mx-auto border-2 border-gray-500 rounded p-8">
     					<div className="mb-5">
     						<label htmlFor="email" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fullname *</label>
-    						<input value={formData.fullname} onChange={handleChange} type="text" id="fullname" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Full name" required />
+    						<input value={formData.fullname} onChange={handleChange} type="text" id="fullname" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Full name" />
   						</div>
 
   						<div className="mb-5">
     						<label htmlFor="email" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email *</label>
-    						<input value={formData.email} onChange={handleChange} type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Email" required />
+    						<input value={formData.email} onChange={handleChange} type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Email" />
   						</div>
 
   						<div className="mb-5">
     						<label htmlFor="email" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone *</label>
-    						<input value={formData.phone} onChange={handleChange} type="text" id="phone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Phone" required />
+    						<input value={formData.phone} onChange={handleChange} type="text" id="phone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Phone" />
   						</div>
 
   						<div className="mb-5">
@@ -63,12 +75,12 @@ const AdminRegister = ()=>{
   						<div className="mb-5 text-left">
   							<label htmlFor="remember" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Have an account? <Link className="text-red-500 underline" to="/admin/login">Sign in</Link></label>
   						</div>
-  						<button type="submit" className="text-left text-white bg-black hover:bg-white hover:text-black hover:border hover:border-black py-2 px-4 rounded">Register</button>
+  						{adminloading? <button type="submit" className="text-left text-white bg-black hover:bg-white hover:text-black hover:border hover:border-black py-2 px-4 rounded"><ClipLoader color='white' loading={true} size={20}/></button>:<button type="submit" className="text-left text-white bg-black hover:bg-white hover:text-black hover:border hover:border-black py-2 px-4 rounded">Register</button>
+  						}
   					</form>
   				</div>
 			</div>
 		</>
 	);
 }
-
 export default AdminRegister;
