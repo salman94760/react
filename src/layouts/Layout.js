@@ -8,16 +8,16 @@ const AdminLayout = () => {
 	const location = useLocation();
 	
 	const getPageTitle = () => {
-		if (location.pathname.includes("add-product")) {
+		if (location.pathname.includes("/admin/add-product")) {
 			return "Add Product";
 		}
-		if (location.pathname.includes("show-product")) {
+		if (location.pathname.includes("/admin/show-product")) {
     		return "Show Product";
 		}
-		if (location.pathname.includes("edit-product")) {
+		if (location.pathname.includes("/admin/edit-product")) {
     		return "Edit Product";
 		}
-  		if (location.pathname.includes("dashboard")) {
+  		if (location.pathname.includes("/admin/dashboard")) {
     		return "Dashboard";
   		}
   		return "";
@@ -83,7 +83,7 @@ const AdminLayout = () => {
 
         <li className="border-b-2">
           <button
-            onClick={logout}
+            onClick={()=>{logout('admin')}}
             className="block w-full text-left p-4 font-medium hover:bg-black hover:text-white"
           >
             Log out

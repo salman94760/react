@@ -106,10 +106,14 @@ export function TodoProvider({ children }) {
   }
 
   //logout user
-  function logout(){
+  function logout(type){
     setLoginUser({userid:"",username:"",useremail:""});
     localStorage.clear();
-    navigate('/admin/login');
+    if(type === 'admin'){
+      navigate('/admin/login');  
+    }else{
+      navigate('/');  
+    }
   }
   
   // add material to Database
