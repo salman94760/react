@@ -91,12 +91,14 @@ export function TodoProvider({ children }) {
         localStorage.setItem('id', result.user.id);
         localStorage.setItem('name',result.user.name);
         localStorage.setItem('email', result.user.email);
+        localStorage.setItem('token', result.token);
         setLoginUser({
           userid: result.user.id,
           username: result.user.name,
           useremail: result.user.email
         });
-        navigate('/AdminDashboard');
+        msgSuccess("User login successfully!");
+        navigate('/admin/dashboard');
       }
     }catch(err){
       setMsg({ msg: err, type: "error" });
@@ -107,7 +109,7 @@ export function TodoProvider({ children }) {
   function logout(){
     setLoginUser({userid:"",username:"",useremail:""});
     localStorage.clear();
-    navigate('/');
+    navigate('/admin/login');
   }
   
   // add material to Database
