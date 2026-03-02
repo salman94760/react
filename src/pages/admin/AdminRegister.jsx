@@ -1,86 +1,192 @@
-import React, { useContext,useState,useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import { TodoContext } from "../../context/Context";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
-import { msgError } from '../../utils/helpers.js';
 import { ClipLoader } from "react-spinners";
-const AdminRegister = ()=>{
-	const navigate = useNavigate();
-	const {userRegister,setLoginUser,adminloading} = useContext(TodoContext);
-	const [formData,setFormData] = useState({fullname:"",email:"",phone:"",address:"",role:"admin"});
+import { msgError } from "../../utils/helpers";
 
-	const handleChange = (e) => {
-    	const { id, value } = e.target;
-    	setFormData((prev) => ({ ...prev, [id]: value }));
-  	};
+const AdminRegister = () => {
 
-  	const handleSubmit = (e) => {
-    	e.preventDefault();
-    	if(formData.fullname === ''){
-    		msgError("Name must not be empty");
-    		return;
-    	}if(formData.email === ''){
-    		msgError("Email must not be empty");
-    		return;
-    	}if(formData.phone === ''){
-    		msgError("Phone must not be empty");
-    		return;
-    	}
-    	userRegister(formData);
-    	setFormData({fullname: "",email: "",phone: "",address: "",});
-    };
+  const navigate = useNavigate();
+  const { userRegister, setLoginUser, adminloading } =
+    useContext(TodoContext);
 
-    useEffect(()=>{
-    	if(localStorage.getItem('id')){
-    		setLoginUser({
-            	userid: localStorage.getItem('id'),
-            	username: localStorage.getItem('name'),
-            	useremail: localStorage.getItem('email')
-          	});
-          	navigate('/material');
-        }
-    },[]);
+  const [formData, setFormData] = useState({
+    fullname: "",
+    email: "",
+    phone: "",
+    address: "",
+    role: "admin",
+  });
 
-    return (
-		<>
-		<Helmet>
-        <title>Admin register</title>
-        <link rel="icon" type="image/png" href="/home-icon.png" />
+  const [error, setError] = useState("");
+
+  /* ================= INPUT ================= */
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  /* ================= VALIDATION ================= */
+  const validateForm = () => {
+
+    if (!formData.fullname.trim())
+      return "Name required";
+
+    if (!/\S+@\S+\.\S+/.test(formData.email))
+      return "Invalid email";
+
+    if (!/^[0-9]{10}$/.test(formData.phone))
+      return "Phone must be 10 digits";
+
+    return null;
+  };
+
+  /* ================= SUBMIT ================= */
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const validationError = validateForm();
+
+    if (validationError) {
+      setError(validationError);
+      msgError(validationError);
+      return;
+    }
+
+    setError("");
+
+    try {
+      await userRegister(formData);
+
+      setFormData({
+        fullname: "",
+        email: "",
+        phone: "",
+        address: "",
+        role: "admin",
+      });
+
+    } catch {
+      setError("Registration failed");
+    }
+  };
+
+  /* ================= AUTO LOGIN ================= */
+  useEffect(() => {
+
+    const id = localStorage.getItem("id");
+
+    if (id) {
+      setLoginUser({
+        userid: id,
+        username: localStorage.getItem("name"),
+        useremail: localStorage.getItem("email"),
+      });
+
+      navigate("/material");
+    }
+
+  }, [navigate, setLoginUser]);
+
+  return (
+    <>
+      <Helmet>
+        <title>Admin Register</title>
       </Helmet>
-			<div className="grid grid-cols-2">
-				<div className="text-black text-center h-screen content-center"><h2 className="text-[100px] text-italic italic font-medium font-[roboto]">Register</h2></div>
-    			<div className="text-black text-center content-center">
-    				<form onSubmit={handleSubmit} className="max-w-md mx-auto border-2 border-gray-500 rounded p-8">
-    					<div className="mb-5">
-    						<label htmlFor="email" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fullname *</label>
-    						<input value={formData.fullname} onChange={handleChange} type="text" id="fullname" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Full name" />
-  						</div>
 
-  						<div className="mb-5">
-    						<label htmlFor="email" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email *</label>
-    						<input value={formData.email} onChange={handleChange} type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Email" />
-  						</div>
+      <div className="min-h-screen grid md:grid-cols-2">
 
-  						<div className="mb-5">
-    						<label htmlFor="email" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone *</label>
-    						<input value={formData.phone} onChange={handleChange} type="text" id="phone" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Phone" />
-  						</div>
+        {/* LEFT */}
+        <div className="hidden md:flex items-center justify-center bg-gray-100">
+          <h2 className="text-7xl italic font-semibold">
+            Register
+          </h2>
+        </div>
 
-  						<div className="mb-5">
-    						<label htmlFor="email" className="text-left block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
-    							<textarea value={formData.address} onChange={handleChange} id="address" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
-  						</div>
+        {/* RIGHT */}
+        <div className="flex justify-center items-center p-6">
 
-  						<div className="mb-5 text-left">
-  							<label htmlFor="remember" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Have an account? <Link className="text-red-500 underline" to="/admin/login">Sign in</Link></label>
-  						</div>
-  						{adminloading? <button type="submit" className="text-left text-white bg-black hover:bg-white hover:text-black hover:border hover:border-black py-2 px-4 rounded"><ClipLoader color='white' loading={true} size={20}/></button>:<button type="submit" className="text-left text-white bg-black hover:bg-white hover:text-black hover:border hover:border-black py-2 px-4 rounded">Register</button>
-  						}
-  					</form>
-  				</div>
-			</div>
-		</>
-	);
-}
+          <form
+            onSubmit={handleSubmit}
+            className="w-full max-w-md bg-white shadow rounded-xl p-8 space-y-4"
+          >
+
+            <h2 className="text-xl font-semibold text-center">
+              Admin Registration
+            </h2>
+
+            {error && (
+              <p className="text-red-500 text-center">
+                {error}
+              </p>
+            )}
+
+            <input
+              name="fullname"
+              value={formData.fullname}
+              onChange={handleChange}
+              placeholder="Full Name"
+              className="border p-2 w-full rounded"
+            />
+
+            <input
+              type="email"
+              name="email"
+              autoComplete="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Email"
+              className="border p-2 w-full rounded"
+            />
+
+            <input
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder="Phone"
+              className="border p-2 w-full rounded"
+            />
+
+            <textarea
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              placeholder="Address"
+              className="border p-2 w-full rounded"
+            />
+
+            <p className="text-sm text-center">
+              Have an account?{" "}
+              <Link
+                to="/admin/login"
+                className="text-red-500 underline"
+              >
+                Sign in
+              </Link>
+            </p>
+
+            <button
+              disabled={adminloading}
+              className="w-full bg-black text-white py-2 rounded flex justify-center"
+            >
+              {adminloading ? (
+                <ClipLoader color="white" size={20} />
+              ) : (
+                "Register"
+              )}
+            </button>
+
+          </form>
+
+        </div>
+      </div>
+    </>
+  );
+};
+
 export default AdminRegister;
